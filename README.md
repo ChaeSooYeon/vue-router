@@ -57,20 +57,20 @@ src/
 
 ### 2. 동적 라우트 매칭
 
-- `'/users/:userNo'`처럼 동적 세그먼트를 정의해 URL 일부를 파라미터로 받았다.
-- `User.vue`에서 `$route.params.userNo`를 사용해 주소에 포함된 값을 화면에 출력했다.
+- `'/users/:username'`처럼 동적 세그먼트를 정의해 URL 일부를 파라미터로 받았다.
+- `User.vue`에서 `$route.params.username`을 사용해 주소에 포함된 값을 화면에 출력했다.
 - `About.vue`에서는 입력값을 `v-model`로 받고, `router.push()`로 `/users/입력값` 경로로 이동시켰다.
 
 학습 포인트
 
-- `:userNo`처럼 `:`로 시작하는 구간은 동적으로 바뀌는 값이다.
+- `:username`처럼 `:`로 시작하는 구간은 동적으로 바뀌는 값이다.
 - 라우트 파라미터는 사용자 상세, 게시글 번호 같은 식별자를 표현할 때 자주 사용된다.
 - 선언형 이동과 프로그래밍 방식 이동을 둘 다 연습했다.
 
 비교
 
-- 현재는 `User.vue`에서 `$route.params.userNo`를 직접 읽고 있는데, 라우트 `props: true` 옵션을 사용하면 컴포넌트가 라우터 의존성을 덜 가지게 만들 수 있다.
-- `About.vue`의 이동 경로도 문자열 템플릿 대신 `router.push({ path: \`/users/\${userNo}\` })`또는`router.push({ name: 'user', params: { userNo } })` 형태로 작성할 수 있다.
+- 현재는 `User.vue`에서 `$route.params.username`을 직접 읽고 있는데, 라우트 `props: true` 옵션을 사용하면 컴포넌트가 라우터 의존성을 덜 가지게 만들 수 있다.
+- `About.vue`의 이동 경로도 문자열 템플릿 대신 `router.push({ path: \`/users/\${username}\` })`또는`router.push({ name: 'user', params: { username } })` 형태로 작성할 수 있다.
 - 이름 기반 라우팅은 경로 문자열이 바뀌어도 코드 수정 범위를 줄이기 쉽다는 장점이 있다.
 
 ### 3. 모든 경로 / 404 Not Found 라우트 잡기
