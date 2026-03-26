@@ -25,9 +25,41 @@ const wrongPath = computed(() => {
 </script>
 
 <template>
-  <div>
-    <h1>404 Not Found</h1>
+  <section class="view-box">
+    <p class="box-label">NotFound.vue</p>
+    <h2>404 Not Found</h2>
     <p>존재하지 않는 페이지입니다.</p>
     <p>잘못된 경로: {{ wrongPath }}</p>
-  </div>
+  </section>
 </template>
+<style scoped>
+.view-box {
+  border: 2px solid #dc2626;
+  border-radius: 10px;
+  padding: 20px;
+  background: #fef2f2;
+}
+
+.box-label {
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 4px 8px;
+  border: 1px solid #dc2626;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #ffffff;
+}
+
+h2 {
+  margin: 0 0 8px;
+}
+
+p {
+  margin: 0 0 8px;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+</style>
