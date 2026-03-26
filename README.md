@@ -15,32 +15,24 @@
 
 ```text
 src/
-├── App.vue
+├── App.vue                    # 공통 레이아웃과 <RouterView />를 배치한 최상위 컴포넌트
 ├── components/
 │   ├── About.vue
 │   ├── Home.vue
-│   ├── Common/
+│   ├── Common/               # 내비게이션, 푸터, 404 페이지 같은 공통 UI 영역
 │   │   ├── Footer.vue
 │   │   ├── Header.vue
 │   │   ├── Nav.vue
 │   │   └── NotFound.vue
-│   └── User/
+│   └── User/                 # 사용자 관련 중첩 라우트 실습 컴포넌트
 │       ├── User.vue
 │       ├── UserHome.vue
 │       ├── UserPosts.vue
 │       └── UserProfile.vue
 ├── hooks/
-├── main.js
-└── router.js
+├── main.js                   # Vue 앱 생성 후 라우터를 등록하는 시작점
+└── router.js                 # 전체 라우트 경로를 정의하는 파일
 ```
-
-파일 구조 포인트
-
-- `src/main.js`: Vue 앱 생성 후 라우터를 등록하는 시작점
-- `src/router.js`: 전체 라우트 경로를 정의하는 파일
-- `src/App.vue`: 공통 레이아웃과 `<RouterView />`를 배치한 최상위 컴포넌트
-- `src/components/Common/`: 내비게이션, 푸터, 404 페이지 같은 공통 UI 영역
-- `src/components/User/`: 사용자 관련 중첩 라우트 실습 컴포넌트
 
 ## 학습한 내용
 
