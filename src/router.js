@@ -2,8 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import Home from './components/Home.vue';
 import About from './components/About.vue';
-import User from './components/User/UserList.vue';
-import NotFound from './components/Layout/NotFound.vue';
+import NotFound from './components/Common/NotFound.vue';
+// User Components
+import User from './components/User/User.vue';
+import UserHome from './components/User/UserHome.vue';
+import UserPosts from './components/User/UserPosts.vue';
+import UserProfile from './components/User/UserProfile.vue';
 
 const routes = [
   // 정적 라우트: 고정된 URL과 컴포넌트를 1:1로 연결합니다.
@@ -11,11 +15,27 @@ const routes = [
   { path: '/about', component: About },
   // 동적 세그먼트는 콜론으로 시작
   {
+    // 부모 라우트:
+    // /users/:username 이 먼저 매칭되면 User 컴포넌트가 바깥 틀로 렌더링됩니다.
+    //
+    // 그림으로 보면:
+    // /users/kim
+    // User.vue
+    // └─ <RouterView /> 안에 UserHome.vue
+    //
+    // /users/kim/profile
+    // User.vue
+    // └─ <RouterView /> 안에 UserProfile.vue
     path: '/users/:username',
     component: User,
     children: [
+      // path: '' 는 "/users"를 만드는 것이 아니라,
+      // 부모 경로 /users/:username 이 이미 맞았을 때 보여줄 기본 자식 화면입니다.
+      // 그래서 최종 주소는 /users/:username 형태가 됩니다.
       { path: '', component: UserHome },
+      // 최종 주소: /users/:username/profile
       { path: 'profile', component: UserProfile },
+      // 최종 주소: /users/:username/posts
       { path: 'posts', component: UserPosts },
     ],
   },

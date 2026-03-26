@@ -1,12 +1,17 @@
-# Vue-Router 학습
+# Vue Router 학습
 
 ## 목차
 
-1. [파일 구조](#파일-구조)
+1. [프로젝트 개요](#프로젝트-개요)
 2. [학습한 내용](#학습한-내용)
 3. [다음에 학습할 내용](#다음에-학습할-내용)
 
-## 파일 구조
+## 프로젝트 개요
+
+- 이 프로젝트는 Vue Router를 직접 구성하면서 라우팅 흐름을 학습하기 위한 실습용 프로젝트다.
+- 단순 페이지 이동뿐 아니라 동적 파라미터, 404 처리, 중첩 라우트까지 단계적으로 연습하는 것을 목표로 한다.
+
+파일 구조
 
 ```text
 src/
@@ -14,12 +19,16 @@ src/
 ├── components/
 │   ├── About.vue
 │   ├── Home.vue
-│   ├── User.vue
-│   └── Layout/
-│       ├── Footer.vue
-│       ├── Header.vue
-│       ├── Nav.vue
-│       └── NotFound.vue
+│   ├── Common/
+│   │   ├── Footer.vue
+│   │   ├── Header.vue
+│   │   ├── Nav.vue
+│   │   └── NotFound.vue
+│   └── User/
+│       ├── User.vue
+│       ├── UserHome.vue
+│       ├── UserPosts.vue
+│       └── UserProfile.vue
 ├── hooks/
 ├── main.js
 └── router.js
@@ -30,77 +39,19 @@ src/
 - `src/main.js`: Vue 앱 생성 후 라우터를 등록하는 시작점
 - `src/router.js`: 전체 라우트 경로를 정의하는 파일
 - `src/App.vue`: 공통 레이아웃과 `<RouterView />`를 배치한 최상위 컴포넌트
-- `src/components/Layout/`: 내비게이션, 푸터, 404 페이지 같은 공통 UI 영역
-- `src/components/`: 실제 라우트와 연결되는 페이지 컴포넌트
+- `src/components/Common/`: 내비게이션, 푸터, 404 페이지 같은 공통 UI 영역
+- `src/components/User/`: 사용자 관련 중첩 라우트 실습 컴포넌트
 
 ## 학습한 내용
 
-### 1. 라우터 시작하기
-
-- `main.js`에서 `app.use(router)`로 라우터를 앱 전역에 등록했다.
-- `router.js`에서 `createRouter`, `createWebHistory`를 사용해 SPA 라우팅 환경을 만들었다.
-- `App.vue`에서는 `<RouterView />`로 현재 URL에 맞는 페이지 컴포넌트를 렌더링했다.
-- `Nav.vue`에서는 `<RouterLink>`를 사용해 새로고침 없는 페이지 이동을 구현했다.
-- `$route.fullPath`를 출력해 현재 라우트 정보가 반응형으로 바뀌는 것도 확인할 수 있다.
-
-학습 포인트
-
-- Vue Router는 URL과 컴포넌트를 연결하는 역할을 한다.
-- `RouterLink`는 일반 `<a>` 태그와 달리 브라우저 전체 새로고침 없이 이동한다.
-- `RouterView`는 "현재 선택된 라우트 컴포넌트가 들어오는 자리"라고 이해하면 된다.
-
-비교
-
-- `createWebHistory()`는 주소가 깔끔하지만 서버 설정이 필요할 수 있다.
-- 같은 라우팅이라도 `createWebHashHistory()`를 쓰면 `/#/about` 형태가 되며 서버 설정 부담은 줄지만 URL이 덜 깔끔하다.
-- 페이지 이동도 `<RouterLink>` 대신 `router.push()`로 할 수 있는데, 전자는 선언형 이동, 후자는 클릭 후 검증이나 계산이 필요한 경우에 쓰기 좋다.
-
-### 2. 동적 라우트 매칭
-
-- `'/users/:username'`처럼 동적 세그먼트를 정의해 URL 일부를 파라미터로 받았다.
-- `User.vue`에서 `$route.params.username`을 사용해 주소에 포함된 값을 화면에 출력했다.
-- `About.vue`에서는 입력값을 `v-model`로 받고, `router.push()`로 `/users/입력값` 경로로 이동시켰다.
-
-학습 포인트
-
-- `:username`처럼 `:`로 시작하는 구간은 동적으로 바뀌는 값이다.
-- 라우트 파라미터는 사용자 상세, 게시글 번호 같은 식별자를 표현할 때 자주 사용된다.
-- 선언형 이동과 프로그래밍 방식 이동을 둘 다 연습했다.
-
-비교
-
-- 현재는 `User.vue`에서 `$route.params.username`을 직접 읽고 있는데, 라우트 `props: true` 옵션을 사용하면 컴포넌트가 라우터 의존성을 덜 가지게 만들 수 있다.
-- `About.vue`의 이동 경로도 문자열 템플릿 대신 `router.push({ path: \`/users/\${username}\` })`또는`router.push({ name: 'user', params: { username } })` 형태로 작성할 수 있다.
-- 이름 기반 라우팅은 경로 문자열이 바뀌어도 코드 수정 범위를 줄이기 쉽다는 장점이 있다.
-
-### 3. 모든 경로 / 404 Not Found 라우트 잡기
-
-- `/:pathMatch(.*)*` 패턴으로 정의되지 않은 모든 경로를 마지막에서 처리했다.
-- `NotFound.vue`에서 `useRoute()`로 잘못 들어온 경로 값을 읽고, 화면에 다시 보여주도록 만들었다.
-- `computed()`를 사용해 `pathMatch` 배열을 사람이 읽기 쉬운 문자열 경로로 변환했다.
-
-학습 포인트
-
-- 라우트 배열에서는 더 구체적인 경로를 먼저 쓰고, catch-all 라우트는 마지막에 두는 것이 중요하다.
-- `pathMatch`는 "잡아낸 값이 저장되는 파라미터 이름"이고, 실제 모든 경로를 받는 역할은 `(.*)*` 패턴이 한다.
-- 404 페이지도 일반 컴포넌트처럼 관리할 수 있고, 잘못된 접근 경로를 사용자에게 안내할 수 있다.
-
-비교
-
-- 지금은 catch-all 라우트로 404를 처리했는데, 서버에서 별도 404 페이지를 내려주는 방식도 있다.
-- 다만 Vue SPA에서는 클라이언트 라우터에서 처리하는 방식이 화면 흐름을 유지하기 쉽다.
-- `computed` 대신 템플릿에서 바로 문자열을 조합할 수도 있지만, 가공 로직을 분리하면 템플릿이 더 단순해진다.
-
-### 4. 이번 코드에서 함께 익힌 Vue 기본 개념
-
-- `script setup` 문법으로 컴포넌트 코드를 더 간결하게 작성했다.
-- `ref()`로 입력값 상태를 반응형으로 관리했다.
-- `useRouter()`, `useRoute()` 같은 컴포저블을 통해 Composition API 방식으로 라우터 기능을 사용했다.
-- `computed()`로 라우트 파라미터를 가공한 값을 반응형으로 만들었다.
-- 상위 레이아웃(`App.vue`) 안에 내비게이션, 본문, 푸터를 배치해 공통 UI와 페이지 영역을 분리했다.
+1. [라우터 시작하기](./docs/01-router-basics.md)
+2. [동적 라우트 매칭](./docs/02-dynamic-routes.md)
+3. [모든 경로와 404 Not Found 처리](./docs/03-not-found-catch-all.md)
+4. [중첩 라우트](./docs/04-nested-routes.md)
 
 ## 다음에 학습할 내용
 
-1. 중첩라우트
-2. 네비게이션 가드
-3. 라우트 컴포넌트에 props전달
+1. 네비게이션 가드
+2. 이름 기반 라우팅
+3. 라우트 컴포넌트에 props 전달
+4. RouterView 슬롯

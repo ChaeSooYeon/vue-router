@@ -1,7 +1,5 @@
-<script setup></script>
 <template>
-  <h3>> User Home</h3>
+  <h3>User Posts</h3>
   <!-- 동적 세그먼트 :username 값은 $route.params.username 로 읽을 수 있습니다. -->
-  User: {{ $route.params.username }}'s Home
+  User: {{ $route.params.username }} 's Posts
 </template>
-<style scoped></style>

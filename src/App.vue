@@ -1,6 +1,6 @@
 <script setup>
-import Footer from './components/Layout/Footer.vue';
-import Nav from './components/Layout/Nav.vue';
+import Footer from './components/Common/Footer.vue';
+import Nav from './components/Common/Nav.vue';
 </script>
 <template>
   <h1>Hello App!</h1>
