@@ -1,5 +1,38 @@
 # Vue-Router 학습
 
+## 목차
+
+1. [파일 구조](#파일-구조)
+2. [학습한 내용](#학습한-내용)
+3. [다음에 학습할 내용](#다음에-학습할-내용)
+
+## 파일 구조
+
+```text
+src/
+├── App.vue
+├── components/
+│   ├── About.vue
+│   ├── Home.vue
+│   ├── User.vue
+│   └── Layout/
+│       ├── Footer.vue
+│       ├── Header.vue
+│       ├── Nav.vue
+│       └── NotFound.vue
+├── hooks/
+├── main.js
+└── router.js
+```
+
+파일 구조 포인트
+
+- `src/main.js`: Vue 앱 생성 후 라우터를 등록하는 시작점
+- `src/router.js`: 전체 라우트 경로를 정의하는 파일
+- `src/App.vue`: 공통 레이아웃과 `<RouterView />`를 배치한 최상위 컴포넌트
+- `src/components/Layout/`: 내비게이션, 푸터, 404 페이지 같은 공통 UI 영역
+- `src/components/`: 실제 라우트와 연결되는 페이지 컴포넌트
+
 ## 학습한 내용
 
 ### 1. 라우터 시작하기
@@ -37,7 +70,7 @@
 비교
 
 - 현재는 `User.vue`에서 `$route.params.userNo`를 직접 읽고 있는데, 라우트 `props: true` 옵션을 사용하면 컴포넌트가 라우터 의존성을 덜 가지게 만들 수 있다.
-- `About.vue`의 이동 경로도 문자열 템플릿 대신 `router.push({ path: \`/users/\${userNo}\` })` 또는 `router.push({ name: 'user', params: { userNo } })` 형태로 작성할 수 있다.
+- `About.vue`의 이동 경로도 문자열 템플릿 대신 `router.push({ path: \`/users/\${userNo}\` })`또는`router.push({ name: 'user', params: { userNo } })` 형태로 작성할 수 있다.
 - 이름 기반 라우팅은 경로 문자열이 바뀌어도 코드 수정 범위를 줄이기 쉽다는 장점이 있다.
 
 ### 3. 모든 경로 / 404 Not Found 라우트 잡기
