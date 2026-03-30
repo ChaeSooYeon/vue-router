@@ -15,11 +15,12 @@ import Nav from './components/Common/Nav.vue';
 
     <main class="shell-box">
       <p class="box-label">RouterView Area</p>
+      <br />
       <!-- 현재 라우트와 연결된 페이지 컴포넌트가 여기서 교체 렌더링됩니다. -->
       <RouterView />
     </main>
 
-    <Footer />
+    <!-- <Footer /> -->
   </div>
 </template>
 <style scoped>
@@ -34,16 +35,16 @@ import Nav from './components/Common/Nav.vue';
 .shell-box {
   border: 2px solid #111827;
   border-radius: 10px;
-  padding: 20px;
+  padding: 10px;
   background: #ffffff;
 }
 
 .box-label {
   display: inline-block;
-  margin: 0 0 12px;
+  margin: 0 0 5px;
   padding: 4px 8px;
   border: 1px solid #111827;
-  border-radius: 999px;
+  border-radius: 10px;
   font-size: 12px;
   font-weight: 700;
   background: #f3f4f6;

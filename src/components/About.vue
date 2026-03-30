@@ -23,7 +23,7 @@ const goToUser = (username) => {
     <h2>About</h2>
     <div class="control-box">
       <p>사용자 페이지로 이동</p>
-    <!-- v-model은 입력값과 ref 상태를 양방향으로 연결합니다. -->
+      <!-- v-model은 입력값과 ref 상태를 양방향으로 연결합니다. -->
       <div class="actions">
         <input
           type="text"
