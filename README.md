@@ -41,13 +41,12 @@ src/
 2. [동적 라우트 매칭](./docs/02-dynamic-routes.md)
 3. [모든 경로와 404 Not Found 처리](./docs/03-not-found-catch-all.md)
 4. [중첩 라우트](./docs/04-nested-routes.md)
+5. [이름 기반 라우팅, 중첩네임드 뷰](./docs/04-nested-routes.md#중첩-네임드-뷰)
+6. [네비게이션 가드(인증)](./docs/05-auth-routing-and-guards.md)
 
 ## 다음에 학습할 내용
 
-1. 이름 기반 라우팅, 중첩네임드 뷰
-2. 네비게이션 가드
-3. 인증 처리
-4. Nuxt.Js의 파일 기반 라우팅 처리
+1. Nuxt.Js의 파일 기반 라우팅 방식으로 리팩토링
 
 ## Overview
 

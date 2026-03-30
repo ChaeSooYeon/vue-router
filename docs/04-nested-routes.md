@@ -54,3 +54,104 @@ User.vue
 ## 한 문장 정리
 
 - 중첩 라우트는 부모 컴포넌트는 유지하고, 그 안의 `<RouterView />` 자리만 자식 컴포넌트로 바꿔 끼우는 방식이다.
+
+## 중첩 네임드 뷰
+
+### 네임드 뷰란
+
+- 기본 중첩 라우트는 부모 컴포넌트 안의 `<RouterView />` 한 곳에만 자식 컴포넌트를 렌더링한다.
+- 네임드 뷰는 `<RouterView name="sidebar" />`처럼 이름이 있는 여러 개의 뷰 영역을 두고, 한 번의 라우트 매칭으로 여러 컴포넌트를 동시에 보여주는 방식이다.
+- 즉, 하나의 자식 라우트가 `default` 뷰와 `sidebar` 뷰를 함께 채울 수 있다.
+
+### 기본 중첩 라우트와의 차이
+
+기본 중첩 라우트:
+
+```js
+{
+  path: 'posts',
+  component: UserPosts
+}
+```
+
+- 부모 안의 기본 `<RouterView />` 한 곳만 바뀐다.
+
+중첩 네임드 뷰:
+
+```js
+{
+  path: 'posts',
+  components: {
+    default: UserPosts,
+    sidebar: UserHome,
+  },
+}
+```
+
+- 기본 뷰와 이름 있는 뷰를 동시에 렌더링한다.
+
+### 이번 프로젝트에서의 적용 방식
+
+`router.js`의 `/users/:username` 자식 라우트에서 `component` 대신 `components`를 사용했다.
+
+```js
+{
+  path: '',
+  name: 'userHome',
+  components: {
+    default: UserHome,
+    sidebar: UserProfile,
+  },
+},
+{
+  path: 'profile',
+  name: 'userProfile',
+  components: {
+    default: UserProfile,
+    sidebar: UserPosts,
+  },
+},
+{
+  path: 'posts',
+  name: 'userPosts',
+  components: {
+    default: UserPosts,
+    sidebar: UserHome,
+  },
+}
+```
+
+이 설정은 `User.vue` 안의 두 개의 `RouterView`와 연결된다.
+
+```vue
+<RouterView />
+<RouterView name="sidebar" />
+```
+
+### 실제 렌더링 결과
+
+- `/users/kim`
+  `default` -> `UserHome.vue`
+  `sidebar` -> `UserProfile.vue`
+
+- `/users/kim/profile`
+  `default` -> `UserProfile.vue`
+  `sidebar` -> `UserPosts.vue`
+
+- `/users/kim/posts`
+  `default` -> `UserPosts.vue`
+  `sidebar` -> `UserHome.vue`
+
+즉, 부모 레이아웃 `User.vue`는 유지되고, 그 안의 두 영역만 라우트에 따라 함께 바뀐다.
+
+### 왜 사용하는가
+
+- 한 화면 안에서 메인 콘텐츠와 보조 콘텐츠를 나눠 보여줄 수 있다.
+- 부모 레이아웃을 유지하면서 여러 영역을 동시에 교체할 수 있다.
+- 예를 들어 메인 영역, 사이드바, 탭 영역, 보조 패널 같은 구조를 라우터 기준으로 제어할 수 있다.
+
+### 한 문장 정리
+
+- 중첩 네임드 뷰는 부모 컴포넌트 안에 여러 개의 `RouterView`를 두고, 자식 라우트가 각 영역에 들어갈 컴포넌트를 동시에 지정하는 방식이다.
+
+![중첩네임드뷰화면](./img/nested-named-view.png)

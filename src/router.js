@@ -24,9 +24,30 @@ const userRoutes = [
     path: '/users/:username',
     component: User,
     children: [
-      { path: '', name: 'userHome', component: UserHome },
-      { path: 'profile', name: 'userProfile', component: UserProfile },
-      { path: 'posts', name: 'userPosts', component: UserPosts },
+      {
+        path: '',
+        name: 'userHome',
+        components: {
+          default: UserHome,
+          sidebar: UserProfile,
+        },
+      },
+      {
+        path: 'profile',
+        name: 'userProfile',
+        components: {
+          default: UserProfile,
+          sidebar: UserPosts,
+        },
+      },
+      {
+        path: 'posts',
+        name: 'userPosts',
+        components: {
+          default: UserPosts,
+          sidebar: UserHome,
+        },
+      },
     ],
   },
 ];

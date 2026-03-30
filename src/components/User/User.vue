@@ -10,14 +10,17 @@ const route = useRoute();
     예)
     /users/kim
     User.vue
-    └─ <RouterView /> 안에 UserHome.vue
+    ├─ <RouterView /> 안에 UserHome.vue
+    └─ <RouterView name="sidebar" /> 안에 UserProfile.vue
 
     /users/kim/profile
     User.vue
-    └─ <RouterView /> 안에 UserProfile.vue
+    ├─ <RouterView /> 안에 UserProfile.vue
+    └─ <RouterView name="sidebar" /> 안에 UserPosts.vue
 
     즉, User.vue는 바깥 레이아웃이고
-    <RouterView /> 는 자식 라우트 컴포넌트가 꽂히는 자리입니다.
+    기본 RouterView와 이름 있는 RouterView를 함께 두어
+    자식 라우트가 여러 영역을 동시에 채울 수 있습니다.
   -->
   <section class="parent-box">
     <p class="box-label">User.vue</p>
@@ -28,9 +31,15 @@ const route = useRoute();
       <RouterLink :to="{ name: 'userProfile', params: route.params }">Profile</RouterLink>
       <RouterLink :to="{ name: 'userPosts', params: route.params }">Posts</RouterLink>
     </nav>
-    <div class="child-slot">
-      <p class="slot-label">Nested RouterView</p>
-      <RouterView />
+    <div class="view-grid">
+      <div class="child-slot">
+        <p class="slot-label">Default View</p>
+        <RouterView />
+      </div>
+      <aside class="child-slot sidebar-slot">
+        <p class="slot-label">Named View: sidebar</p>
+        <RouterView name="sidebar" />
+      </aside>
     </div>
   </section>
 </template>
@@ -96,5 +105,21 @@ a.router-link-active {
   border-radius: 10px;
   padding: 16px;
   background: #ffffff;
+}
+
+.view-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.sidebar-slot {
+  background: #fff7ed;
+}
+
+@media (min-width: 720px) {
+  .view-grid {
+    grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+    align-items: start;
+  }
 }
 </style>
