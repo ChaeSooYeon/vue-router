@@ -16,23 +16,32 @@
 
 ```text
 src/
-├── App.vue                    # 공통 레이아웃과 <RouterView />를 배치한 최상위 컴포넌트
+├── App.vue                         # 공통 레이아웃과 <RouterView />를 배치한 최상위 컴포넌트
+├── api/
+│   └── mockAuthApi.js             # 인증 흐름 확인용 목업 API
 ├── components/
 │   ├── About.vue
 │   ├── Home.vue
-│   ├── Common/               # 내비게이션, 푸터, 404 페이지 같은 공통 UI 영역
+│   ├── Common/                    # 공통 UI와 인증 화면 영역
+│   │   ├── Auth/
+│   │   │   ├── Join.vue
+│   │   │   └── Login.vue
 │   │   ├── Footer.vue
 │   │   ├── Header.vue
 │   │   ├── Nav.vue
 │   │   └── NotFound.vue
-│   └── User/                 # 사용자 관련 중첩 라우트 실습 컴포넌트
+│   └── User/                      # 사용자/마이페이지 관련 화면
+│       ├── Join.vue               # 이전 실습용 파일
+│       ├── MyPage.vue
+│       ├── MyPageUserInfo.vue
 │       ├── User.vue
 │       ├── UserHome.vue
 │       ├── UserPosts.vue
 │       └── UserProfile.vue
-├── hooks/
-├── main.js                   # Vue 앱 생성 후 라우터를 등록하는 시작점
-└── router.js                 # 전체 라우트 경로를 정의하는 파일
+├── main.js                        # Vue 앱 생성 후 라우터를 등록하는 시작점
+├── router.js                      # 현재 사용하는 메인 라우터 설정
+└── store/
+    └── useAuthStore.js            # 인증 상태 확인과 인증 함수 연결
 ```
 
 ## 학습한 내용
