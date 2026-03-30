@@ -10,25 +10,28 @@
 - 즉, 사용자가 페이지에 "들어간 뒤" 막는 것이 아니라, 라우터가 "들어가기 전" 이동을 제어하는 방식이다.
 
 #### 전역 Resolve 가드
+
 - router.beforeEach와 유사하게 모든 내비게이션에서 트리거되지만, resolve 가드는 내비게이션이 확정되기 직전, 모든 컴포넌트 내 가드와 비동기 라우트 컴포넌트가 해결된 후에 호출된다.
 - 예로 beforeEach로 페이지에 대한 접근 자체를 검사하고, 이동 하면, beforeResolve로 카메라 접근 권한을 확인하는 방식이다.
-```
-router.beforeResolve(async to => {
+
+```js
+router.beforeResolve(async (to) => {
   if (to.meta.requiresCamera) {
     try {
-      await askForCameraPermission()
+      await askForCameraPermission();
     } catch (error) {
       if (error instanceof NotAllowedError) {
         // ... 오류를 처리한 후 내비게이션 취소
-        return false
+        return false;
       } else {
         // 예기치 않은 오류, 내비게이션 취소 및 오류를 전역 핸들러로 전달
-        throw error
+        throw error;
       }
     }
   }
-})
+});
 ```
+
 - router.beforeResolve는 사용자가 페이지에 진입할 수 없는 경우 데이터를 가져오거나 기타 작업을 피하고 싶을 때 이상적인 위치이다.
 
 ### 라우트 메타 정보
@@ -49,8 +52,9 @@ router.beforeResolve(async to => {
 - 그래서 `query.reason` 값을 함께 전달해 "인증이 필요해서 이동된 것인지", "로그아웃 후 이동된 것인지"를 화면에서 설명할 수 있게 했다.
 
 ## 2. 인증과 네비게이션 가드
+
 - 네비게이션 가드와 라우팅 흐름을 확인하기 위해 실제 백엔드 구현 대신 간단한 목업 API를 사용했다.
-  
+
 ### 보호 페이지 접근 제어
 
 - `meta.requiresAuth`가 있는 라우트는 전역 네비게이션 가드에서 로그인 여부를 검사하도록 정리했다.
@@ -94,7 +98,6 @@ router.beforeResolve(async to => {
 - `MyPage.vue`를 별도 페이지 레이아웃으로 만들고, `MyPageUserInfo.vue`를 중첩 라우트용 자식 화면으로 분리했다.
 - 인증 화면인 `Join.vue`도 `Common/Auth` 아래로 이동시켜 `Login.vue`와 같은 영역으로 맞췄다.
 - 이유는 "공개 페이지", "인증 페이지", "사용자 상세 페이지", "내 페이지"의 책임이 섞이지 않게 하려는 목적이다.
-
 
 ## 3. 라우트 구조와 컴포넌트 역할 분리
 
