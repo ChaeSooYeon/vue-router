@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import useAuthStore from './store/useAuthStore';
 
 import Login from './components/Common/Auth/Login.vue';
-import Join from './components/User/Join.vue';
+import Join from './components/Common/Auth/Join.vue';
 import UserHome from './components/User/UserHome.vue';
 
 const routes = [

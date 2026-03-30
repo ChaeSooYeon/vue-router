@@ -1,42 +1,22 @@
-const useAuthStore = () => {
-  const getLogInStatus = () => sessionStorage.getItem('login') || false;
-  const login = async (params) => {
-    const { id, pw } = params;
-    //login 처리 로직
-    const loginInfo = JSON.parse(sessionStorage.getItem('login'));
-    if (loginInfo?.id === null || loginInfo?.id !== id)
-      return {
-        status: 'fail',
-        code: 'NO-USER',
-        message: '등록된 아이디가 없습니다',
-      };
+import {
+  getSessionUser,
+  join as joinApi,
+  login as loginApi,
+  logout as logoutApi,
+} from '@/api/mockAuthApi';
 
-    if (loginInfo.id === id && loginInfo.pw === pw)
-      return { status: 'success', message: '' };
-    else {
-      return {
-        status: 'fail',
-        code: 'NOT-MATCH-PASSWORD',
-        message: '비밀번호가 맞지 않습니다',
-      };
-    }
+const useAuthStore = () => {
+  const getLoginStatus = async () => {
+    const sessionUser = await getSessionUser();
+    return Boolean(sessionUser?.id);
   };
-  const join = async (params) => {
-    const { id, pw } = params;
-    if (id && pw) {
-      sessionStorage.setItem('login', JSON.stringify({ id, pw }));
-      console.log(JSON.parse(sessionStorage.getItem('login')));
-      return {
-        status: 'success',
-      };
-    } else {
-      return {
-        status: 'fail',
-        code: 'INCORRECT PARAMETERS',
-        message: '아이디와 비밀번호가 유효하지 않습니다',
-      };
-    }
-  };
-  return { isLogin: getLogInStatus(), login, join };
+
+  const getCurrentUser = () => getSessionUser();
+  const login = (params) => loginApi(params);
+  const join = (params) => joinApi(params);
+  const logout = () => logoutApi();
+
+  return { getLoginStatus, getCurrentUser, login, join, logout };
 };
+
 export default useAuthStore;

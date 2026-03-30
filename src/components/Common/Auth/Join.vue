@@ -1,67 +1,46 @@
 <script setup>
-import router from '@/router';
 import useAuthStore from '@/store/useAuthStore';
-import { computed, ref } from 'vue';
+import router from '@/router';
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const authStore = useAuthStore();
 const route = useRoute();
-
 const id = ref('');
 const pw = ref('');
 const isSubmitting = ref(false);
-const noticeMessage = computed(() => {
-  if (route.query.reason === 'auth') {
-    return '이 페이지는 로그인 후에만 접근할 수 있습니다.';
-  }
 
-  if (route.query.reason === 'logout') {
-    return '로그아웃되었습니다. 다시 로그인할 수 있습니다.';
-  }
-
-  return '';
-});
-
-const handleLogin = async () => {
+const handleJoin = async () => {
   if (isSubmitting.value) return;
 
   isSubmitting.value = true;
   const params = { id: id.value, pw: pw.value };
-  const res = await authStore.login(params);
+  const res = await authStore.join(params);
 
   isSubmitting.value = false;
 
   if (res.status === 'success') {
-    const redirectPath =
-      typeof route.query.redirect === 'string' ? route.query.redirect : '';
-    const targetRoute = redirectPath || { name: 'myPage' };
-    router.push(targetRoute);
-    return;
-  }
-
-  if (res.code === 'NO_USER') {
-    alert(res.message);
+    alert(res.message || '회원가입이 완료되었습니다.');
     const redirectPath =
       typeof route.query.redirect === 'string' ? route.query.redirect : '';
 
     router.push({
-      name: 'join',
+      name: 'login',
       query: {
         ...(redirectPath ? { redirect: redirectPath } : {}),
         ...(route.query.reason ? { reason: route.query.reason } : {}),
       },
     });
-    return;
+  } else {
+    alert(res.message || '회원가입실패');
   }
-
-  alert(res.message || '로그인 실패');
 };
 </script>
 <template>
-  <div class="container">
-    <form class="form" @submit.prevent="handleLogin">
-      <p>Login</p>
-      <p v-if="noticeMessage" class="notice-text">{{ noticeMessage }}</p>
+  <section class="auth-box">
+    <p class="box-label">Join.vue</p>
+    <h2>회원가입</h2>
+    <form class="form" @submit.prevent="handleJoin">
       <label for="userId">
         <input
           type="text"
@@ -80,32 +59,39 @@ const handleLogin = async () => {
         />
       </label>
       <button type="submit" name="btnLogin" :disabled="isSubmitting">
-        {{ isSubmitting ? '로그인 중...' : '로그인' }}
+        {{ isSubmitting ? '가입 중...' : '회원가입' }}
       </button>
     </form>
-  </div>
+  </section>
 </template>
 <style scoped>
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-form {
+.auth-box {
   width: 320px;
+  margin: 0 auto;
   padding: 24px;
   border-radius: 16px;
   background: white;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-.notice-text {
+.box-label {
+  display: inline-block;
   margin: 0 0 12px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: #eff6ff;
-  color: #1d4ed8;
-  font-size: 14px;
+  padding: 4px 8px;
+  border: 1px solid #111827;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #f3f4f6;
+}
+
+h2 {
+  margin: 0 0 16px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
 }
 
 input {
@@ -116,6 +102,7 @@ input {
   border: 1px solid #d1d5db;
   border-radius: 8px;
 }
+
 button {
   width: 100%;
   height: 44px;

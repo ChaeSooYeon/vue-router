@@ -1,4 +1,8 @@
-<script setup></script>
+<script setup>
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+</script>
 <template>
   <!--
     이 컴포넌트는 /users/:username 부모 라우트의 공통 틀입니다.
@@ -18,11 +22,11 @@
   <section class="parent-box">
     <p class="box-label">User.vue</p>
     <h2>User Layout</h2>
-    <p class="username">username: {{ $route.params.username }}</p>
+    <p class="username">username: {{ route.params.username }}</p>
     <nav class="inner-nav">
-      <RouterLink to="">Home</RouterLink>
-      <RouterLink to="profile">Profile</RouterLink>
-      <RouterLink to="posts">Posts</RouterLink>
+      <RouterLink :to="{ name: 'userHome', params: route.params }">Home</RouterLink>
+      <RouterLink :to="{ name: 'userProfile', params: route.params }">Profile</RouterLink>
+      <RouterLink :to="{ name: 'userPosts', params: route.params }">Posts</RouterLink>
     </nav>
     <div class="child-slot">
       <p class="slot-label">Nested RouterView</p>

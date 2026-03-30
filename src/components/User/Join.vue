@@ -2,29 +2,38 @@
 import useAuthStore from '@/store/useAuthStore';
 import router from '@/router';
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 
+const authStore = useAuthStore();
+const route = useRoute();
 const id = ref('');
 const pw = ref('');
+const isSubmitting = ref(false);
 
 const handleJoin = async () => {
-  const redirect = '';
-  const authStore = useAuthStore();
+  if (isSubmitting.value) return;
+
+  isSubmitting.value = true;
   const params = { id: id.value, pw: pw.value };
   const res = await authStore.join(params);
+
+  isSubmitting.value = false;
+
   if (res.status === 'success') {
-    const targetRoute = redirect || { name: 'login' };
-    router.push(targetRoute);
+    alert(res.message || '회원가입이 완료되었습니다.');
+    const redirectPath =
+      typeof route.query.redirect === 'string' ? route.query.redirect : '';
+    //history.state.redirect
+
+    router.push({
+      name: 'login',
+      query: {
+        ...(redirectPath ? { redirect: redirectPath } : {}),
+        ...(route.query.reason ? { reason: route.query.reason } : {}),
+      },
+    });
   } else {
     alert(res.message || '회원가입실패');
-    // if (res.code === 'NO-USER') {
-    //   alert(res.message);
-    //   router.replace('/join');
-    // } else if (res.code === 'NOT-MATCH-PASSWORD') {
-    //   alert(res.message);
-    //   router.replace('/login');
-    // } else {
-    //   alert(res.message || '로그인 실패');
-    // }
   }
 };
 </script>
@@ -49,7 +58,9 @@ const handleJoin = async () => {
         placeholder="비밀번호"
       />
     </label>
-    <button type="submit" name="btnLogin">회원가입</button>
+    <button type="submit" name="btnLogin" :disabled="isSubmitting">
+      {{ isSubmitting ? '가입 중...' : '회원가입' }}
+    </button>
   </form>
 </template>
 <style scoped></style>
